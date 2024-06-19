@@ -1,8 +1,5 @@
-# Dependency directories
-node_modules/
-
-# Environment variables
-.env
-
-# VS Code
-.vscode/
+basic-erp/backend/node_modules
+basic-erp/frontend/node_modules
+Project documentation week 2.docx
+basic-erp/backend/.env
+  
