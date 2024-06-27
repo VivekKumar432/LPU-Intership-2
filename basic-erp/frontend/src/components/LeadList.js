@@ -1,19 +1,28 @@
-// src/components/LeadList.js
 import React, { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import './LeadList.css';
 
 const LeadList = () => {
   const [leads, setLeads] = useState([]);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchLeads = async () => {
-      const res = await axios.get(`${process.env.REACT_APP_API_URL}/api/leads`);
-      setLeads(res.data);
+      try {
+        const res = await axios.get(`${process.env.REACT_APP_API_URL}/api/leads`);
+        if (res.data.length === 0) {
+          navigate('/user-dashboard/add-lead');
+        } else {
+          setLeads(res.data);
+        }
+      } catch (err) {
+        console.error(err);
+        // Handle error accordingly if needed
+      }
     };
     fetchLeads();
-  }, []);
+  }, [navigate]);
 
   return (
     <div className="lead-list">

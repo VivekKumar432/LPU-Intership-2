@@ -1,19 +1,28 @@
-// src/components/ContactList.js
 import React, { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import './ContactList.css';
 
 const ContactList = () => {
   const [contacts, setContacts] = useState([]);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchContacts = async () => {
-      const res = await axios.get(`${process.env.REACT_APP_API_URL}/api/contacts`);
-      setContacts(res.data);
+      try {
+        const res = await axios.get(`${process.env.REACT_APP_API_URL}/api/contacts`);
+        if (res.data.length === 0) {
+          navigate('/user-dashboard/add-contact');
+        } else {
+          setContacts(res.data);
+        }
+      } catch (err) {
+        console.error(err);
+        // Handle error accordingly if needed
+      }
     };
     fetchContacts();
-  }, []);
+  }, [navigate]);
 
   return (
     <div className="contact-list">
