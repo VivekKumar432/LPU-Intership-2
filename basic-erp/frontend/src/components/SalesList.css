@@ -1,0 +1,44 @@
+/* src/components/SalesList.css */
+.sales-list {
+    padding: 20px;
+    background-color: #f9f9f9;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+  }
+  
+  .sales-list h2 {
+    margin-bottom: 20px;
+  }
+  
+  .sales-list .btn {
+    display: inline-block;
+    margin-bottom: 20px;
+    padding: 10px 20px;
+    background-color: #007bff;
+    color: white;
+    text-decoration: none;
+    border-radius: 4px;
+  }
+  
+  .sales-list .btn:hover {
+    background-color: #0056b3;
+  }
+  
+  .sales-list ul {
+    list-style-type: none;
+    padding: 0;
+  }
+  
+  .sales-list ul li {
+    margin-bottom: 10px;
+  }
+  
+  .sales-list ul li a {
+    text-decoration: none;
+    color: #007bff;
+  }
+  
+  .sales-list ul li a:hover {
+    text-decoration: underline;
+  }
+  

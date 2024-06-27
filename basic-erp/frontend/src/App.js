@@ -7,7 +7,6 @@ import Register from './pages/Register';
 import Login from './pages/Login';
 import UserDashboard from './pages/UserDashboard';
 import AdminDashboard from './pages/AdminDashboard';
-import ProtectedRoute from './components/ProtectedRoute';
 
 const App = () => {
   return (
@@ -17,16 +16,8 @@ const App = () => {
         <Route path="/" element={<Home />} />
         <Route path="/register" element={<Register />} />
         <Route path="/login" element={<Login />} />
-        <Route path="/user-dashboard" element={
-          <ProtectedRoute roleRequired="user">
-            <UserDashboard />
-          </ProtectedRoute>
-        } />
-        <Route path="/admin-dashboard" element={
-          <ProtectedRoute roleRequired="admin">
-            <AdminDashboard />
-          </ProtectedRoute>
-        } />
+        <Route path="/user-dashboard/*" element={<UserDashboard />} />
+        <Route path="/admin-dashboard/*" element={<AdminDashboard />} />
       </Routes>
     </Router>
   );
