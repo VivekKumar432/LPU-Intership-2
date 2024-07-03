@@ -21,6 +21,7 @@ const Register = () => {
         role: isAdmin ? 'admin' : 'user'
       });
       setMessage('Registration successful!');
+      
     } catch (err) {
       console.error(err);
       if (err.response && err.response.data) {
