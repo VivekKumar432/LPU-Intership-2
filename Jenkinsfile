@@ -1,37 +1,56 @@
 pipeline {
     agent any
-    environment {
-        DOCKER_CREDENTIALS_ID = 'dockerhub-credentials'
-    }
     stages {
         stage('Checkout') {
             steps {
-                git 'https://github.com/VivekKumar432/LPU-Intership-2.git'
+                checkout([$class: 'GitSCM',
+                          branches: [[name: '*/main']],
+                          userRemoteConfigs: [[url: 'https://github.com/VivekKumar432/LPU-Intership-2.git']]
+                ])
             }
         }
-        stage('Build Backend') {
-            steps {
-                sh 'docker-compose build backend'
-            }
-        }
-        stage('Run Tests') {
-            steps {
-                sh 'docker-compose run backend npm test'
-            }
-        }
-        stage('Build Docker Image') {
+        stage('Build') {
             steps {
                 script {
-                    docker.build('erp-system-backend:latest')
+                    // Install dependencies and build the application
+                    sh 'npm install'
+                    sh 'npm run build'
+                }
+            }
+        }
+        stage('Test') {
+            steps {
+                script {
+                    // Run tests
+                    sh 'npm test'
+                }
+            }
+        }
+        stage('Docker Build') {
+            steps {
+                script {
+                    // Build Docker image
+                    sh 'docker build -t your-docker-username/your-app-name:latest .'
+                }
+            }
+        }
+        stage('Docker Push') {
+            steps {
+                script {
+                    // Push Docker image to registry
+                    withCredentials([string(credentialsId: 'dockerhub-credentials-id', variable: 'DOCKERHUB_PASSWORD')]) {
+                        sh 'echo $DOCKERHUB_PASSWORD | docker login -u your-docker-username --password-stdin'
+                        sh 'docker push your-docker-username/your-app-name:latest'
+                    }
                 }
             }
         }
         stage('Deploy') {
             steps {
                 script {
-                    docker.withRegistry('https://registry.hub.docker.com', DOCKER_CREDENTIALS_ID) {
-                        docker.image('erp-system-backend:latest').push()
-                    }
+                    // Deploy using Docker Compose
+                    sh 'docker-compose down'
+                    sh 'docker-compose up -d'
                 }
             }
         }
