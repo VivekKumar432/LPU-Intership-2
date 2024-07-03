@@ -13,7 +13,7 @@ pipeline {
             steps {
                 script {
                     // Using PowerShell for Windows
-                    bat 'npm install'
+                    bat 'docker-compose build backend'
                     bat 'npm run build'
                 }
             }
