@@ -3,10 +3,6 @@ pipeline {
 
 
     environment {
-        // DOCKER_REGISTRY_CREDENTIALS = credentials('docker-hub-credentials') // Assuming you have credentials configured in Jenkins
-        DOCKER_IMAGE_NAME = 'mern-backend'
-        DOCKER_IMAGE_TAG = 'latest'
-        DOCKER_REPO = 'thepurpleaxe/mern-backend'
         registry = "index.docker.io/v1/"
         dockerCreds = credentials('dockerhub-credentials') // Reference the ID of your Jenkins credentials here
     }
@@ -62,7 +58,7 @@ pipeline {
             steps {
                 script {
                     docker.withRegistry('https://index.docker.io/v1/', 'dockerhub-credentials') {
-                        docker.image("${DOCKER_IMAGE_NAME}:${DOCKER_IMAGE_TAG}").push("${DOCKER_REPO}:${DOCKER_IMAGE_TAG}")
+                        docker.image('mern-backend').push('latest')
                     }
                 }
             }
