@@ -4,14 +4,14 @@ pipeline {
         stage('Build Backend') {
             steps {
                 script {
-                    docker.build('mern-backend', './backend')
+                    docker.build('mern-backend', 'backend')
                 }
             }
         }
         stage('Build Frontend') {
             steps {
                 script {
-                    docker.build('mern-frontend', './frontend')
+                    docker.build('mern-frontend', 'frontend')
                 }
             }
         }
