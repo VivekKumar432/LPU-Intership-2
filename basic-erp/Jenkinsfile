@@ -1,17 +1,50 @@
 pipeline {
     agent any
     stages {
+        // stage('Build Backend') {
+        //     steps {
+        //         script {
+        //             docker.build('mern-backend', 'backend')
+        //         }
+        //     }
+        // }
         stage('Build Backend') {
             steps {
+                // Build Docker image for backend
                 script {
-                    docker.build('mern-backend', 'backend')
+                    def backendPath = "basic-erp/backend"
+
+                    // Check if the directory exists
+                    if (fileExists(backendPath)) {
+                        // Build Docker image
+                        bat "docker build -t mern-backend ${backendPath}"
+                    } else {
+                        error "Backend directory ${backendPath} not found"
+                    }
                 }
             }
         }
-        stage('Build Frontend') {
+        // stage('Build Frontend') {
+        //     steps {
+        //         script {
+        //             docker.build('mern-frontend', 'frontend')
+        //         }
+        //     }
+        // }
+
+         stage('Build Frontend') {
             steps {
+                // Build Docker image for frontend
                 script {
-                    docker.build('mern-frontend', 'frontend')
+                    def frontendPath = "basic-erp/frontend"
+
+                    // Check if the directory exists
+                    if (fileExists(frontendPath)) {
+                        // Build Docker image
+                        bat "docker build -t mern-frontend ${frontendPath}"
+                    } else {
+                        error "Frontend directory ${frontendPath} not found"
+                    }
                 }
             }
         }
