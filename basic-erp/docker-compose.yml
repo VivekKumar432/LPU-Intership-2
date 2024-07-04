@@ -11,6 +11,8 @@ services:
       - ./backend:/usr/src/app
     networks:
       - erp-network
+    depends_on:
+      - mongo
 
   frontend:
     build: ./frontend
@@ -23,35 +25,18 @@ services:
     networks:
       - erp-network
 
-networks:
-  erp-network:
-    driver: bridge
-
-version: '3.8'
-
-services:
-  backend:
-    build: ./backend
+  mongo:
+    image: mongo
     ports:
-      - "5000:5000"
-    env_file:
-      - ./backend/.env
+      - "27017:27017"
     volumes:
-      - ./backend:/usr/src/app
-    networks:
-      - erp-network
-
-  frontend:
-    build: ./frontend
-    ports:
-      - "3000:3000"
-    env_file:
-      - ./frontend/.env
-    volumes:
-      - ./frontend:/usr/src/app
+      - mongo-data:/data/db
     networks:
       - erp-network
 
 networks:
   erp-network:
     driver: bridge
+
+volumes:
+  mongo-data:
