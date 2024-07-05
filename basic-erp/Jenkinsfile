@@ -40,7 +40,6 @@ pipeline {
                 script {
                     docker.withRegistry(dockerRegistry, 'dockerhub-credentials') {
                         echo "Pushing backend image to Docker Hub"
-                        bat "docker logout"
                         bat "docker push ${backendImage}:latest"
                     }
                 }
