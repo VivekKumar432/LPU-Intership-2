@@ -56,7 +56,8 @@ pipeline {
                 script {
                     docker.withRegistry(dockerRegistry, 'dockerhub-credentials') {
                         echo "Pushing frontend image to Docker Hub"
-                        bat "docker push ${frontendImage}:latest"
+                        bat "docker push thepurpleaxe/mern-frontend:${frontendImage}"
+                        // bat "docker push ${frontendImage}:latest"
                     }
                 }
             }
