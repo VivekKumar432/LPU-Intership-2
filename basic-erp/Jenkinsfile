@@ -35,38 +35,28 @@ pipeline {
             }
         }
 
-        stage('Run Container') {
+        stage('Push Backend') {
             steps {
                 script {
-                        bat "docker run -d -p 8080:3000  ${backendImage}:latest"
-                        bat "docker run -d -p 8080:5000  ${frontendimage}:latest"
+                    docker.withRegistry(dockerRegistry, 'dockerhub-credentials') {
+                        echo "Pushing backend image to Docker Hub"
+                        bat "docker push ${backendImage}:latest"
                     }
                 }
             }
         }
 
-    //     stage('Push Backend') {
-    //         steps {
-    //             script {
-    //                 docker.withRegistry(dockerRegistry, 'dockerhub-credentials') {
-    //                     echo "Pushing backend image to Docker Hub"
-    //                     bat "docker push ${backendImage}:latest"
-    //                 }
-    //             }
-    //         }
-    //     }
-
-    //     stage('Push Frontend') {
-    //         steps {
-    //             script {
-    //                 docker.withRegistry(dockerRegistry, 'dockerhub-credentials') {
-    //                     echo "Pushing frontend image to Docker Hub"
-    //                     bat "docker push ${frontendImage}:latest"
-    //                 }
-    //             }
-    //         }
-    //     }
-    // }
+        stage('Push Frontend') {
+            steps {
+                script {
+                    docker.withRegistry(dockerRegistry, 'dockerhub-credentials') {
+                        echo "Pushing frontend image to Docker Hub"
+                        bat "docker push ${frontendImage}:latest"
+                    }
+                }
+            }
+        }
+    }
 
     post {
         always {
