@@ -38,7 +38,8 @@ pipeline {
         stage('Push Backend') {
             steps {
                 script {
-                    docker.withRegistry(dockerRegistry, 'dockerhub-credentials') {
+                    withDockerRegistry([ credentialsId: "dockerhub-credentials", url: dockerRegistry ]) {
+                    // docker.withRegistry(dockerRegistry, 'dockerhub-credentials') {
                         echo "Pushing backend image to Docker Hub"
                         bat "docker push ${backendImage}:latest"
                     }
