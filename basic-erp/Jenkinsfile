@@ -23,7 +23,7 @@ pipeline {
                     // Check if the directory exists
                     if (fileExists(backendPath)) {
                         // Build Docker image
-                        bat "docker build -t mern-backend ${backendPath}"
+                        bat "docker build -t thepurplexe/mern-backend ${backendPath}"
                     } else {
                         error "Backend directory ${backendPath} not found"
                     }
