@@ -4,8 +4,8 @@ pipeline {
     environment {
         dockerRegistry = "https://index.docker.io/v1/"
         dockerCreds = credentials('dockerhub-credentials')
-        backendImage = 'thepurplexe/mern-backend'
-        frontendImage = 'thepurplexe/mern-frontend'
+        backendImage = 'mern-backend'
+        frontendImage = 'mern-frontend'
     }
 
     stages {
@@ -15,6 +15,9 @@ pipeline {
                     def backendPath = "basic-erp/backend"
                     if (fileExists(backendPath)) {
                         bat "docker build -t ${backendImage}:latest ${backendPath}"
+                        bat "docker tag ${backendImage} thepurpleaxe/mern-backend:mern-backend"
+                        // bat "docker tag ${backendImage} ${backendImage}:latest"
+
                     } else {
                         error "Backend directory ${backendPath} not found"
                     }
@@ -39,10 +42,10 @@ pipeline {
             steps {
                 script {
                     docker.withRegistry("https://index.docker.io/v1/", 'dockerhub-credentials') {
-                        bat 'docker login -u thepurpleaxe -p FalconHeavy@01'
+                        // bat 'docker login -u thepurpleaxe -p FalconHeavy@01'
                         // bat 'docker push json101/javapp'
                         echo "Pushing backend image to Docker Hub"
-                        bat "docker push ${backendImage}"
+                        bat "docker push thepurpleaxe/mern-backend:${backendImage}"
                     }
                 }
             }
