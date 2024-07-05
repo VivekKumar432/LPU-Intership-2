@@ -2,7 +2,7 @@ pipeline {
     agent any
 
     environment {
-        dockerRegistry = "index.docker.io/v1/"
+        dockerRegistry = "https://index.docker.io/v1/"
         dockerCreds = credentials('dockerhub-credentials') // Reference the ID of your Jenkins credentials here
         backendImage = 'thepurplexe/mern-backend'
         frontendImage = 'thepurplexe/mern-frontend'
@@ -14,8 +14,7 @@ pipeline {
                 script {
                     def backendPath = "basic-erp/backend"
                     if (fileExists(backendPath)) {
-                        // Build Docker image
-                        bat "docker build -t thepurplexe/mern-backend ${backendPath}"
+                        bat "docker build -t ${backendImage}:latest ${backendPath}"
                     } else {
                         error "Backend directory ${backendPath} not found"
                     }
@@ -39,7 +38,8 @@ pipeline {
         stage('Push Backend') {
             steps {
                 script {
-                    docker.withRegistry('https://index.docker.io/v1/', 'dockerhub-credentials') {
+                    docker.withRegistry(dockerRegistry, 'dockerhub-credentials') {
+                        echo "Pushing backend image to Docker Hub"
                         bat "docker push ${backendImage}:latest"
                     }
                 }
@@ -49,11 +49,21 @@ pipeline {
         stage('Push Frontend') {
             steps {
                 script {
-                    docker.withRegistry('https://index.docker.io/v1/', 'dockerhub-credentials') {
+                    docker.withRegistry(dockerRegistry, 'dockerhub-credentials') {
+                        echo "Pushing frontend image to Docker Hub"
                         bat "docker push ${frontendImage}:latest"
                     }
                 }
             }
+        }
+    }
+
+    post {
+        always {
+            echo 'Pipeline completed'
+        }
+        failure {
+            echo 'Pipeline failed'
         }
     }
 }
