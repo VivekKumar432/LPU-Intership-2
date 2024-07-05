@@ -14,7 +14,8 @@ pipeline {
                 script {
                     def backendPath = "basic-erp/backend"
                     if (fileExists(backendPath)) {
-                        bat "docker build -t ${backendImage}:latest ${backendPath}"
+                        // Build Docker image
+                        bat "docker build -t thepurplexe/mern-backend ${backendPath}"
                     } else {
                         error "Backend directory ${backendPath} not found"
                     }
